@@ -1,0 +1,1102 @@
+<title>Funday: Vai, Vai Jonas</title>
+<meta charset="utf-8">
+<meta name="google" content="notranslate">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700&family=Cormorant:ital,wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-950:#170a2b;
+    --purple-900:#200f3c;
+    --purple-800:#38195c;
+    --purple-700:#4c2278;
+    --magenta-500:#d5468f;
+    --gold-400:#ffcb3d;
+    --gold-300:#ffe08a;
+    --cream-50:#fbf3e2;
+    --cream-100:#f4e6c6;
+    --ink-900:#241338;
+    --ink-700:#4d3969;
+    --line-soft:rgba(255,255,255,.16);
+    --font-display:'Baloo 2', ui-rounded, 'Segoe UI Rounded', system-ui, sans-serif;
+    --font-body:'Quicksand', system-ui, sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--purple-950);
+    color:var(--ink-900);
+    font-family:var(--font-body);
+    font-weight:500;
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  body.landing-open{overflow:auto;}
+  img{display:block;max-width:100%;}
+  h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;}
+  p{margin:0;}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:24px;}
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+
+  a:focus-visible,button:focus-visible{
+    outline:3px solid var(--gold-400);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn-cta{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--gold-400);
+    color:var(--purple-950);
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.05rem;
+    padding:15px 30px;
+    border-radius:999px;
+    text-decoration:none;
+    box-shadow:0 10px 24px -8px rgba(255,203,61,.55), inset 0 -3px 0 rgba(0,0,0,.15);
+    transition:transform .18s ease, box-shadow .18s ease;
+    border:none;cursor:pointer;
+  }
+  .btn-cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px -8px rgba(255,203,61,.65), inset 0 -3px 0 rgba(0,0,0,.15);}
+  .btn-cta svg{transition:transform .18s ease;}
+  .btn-cta:hover svg{transform:translateX(3px);}
+  .eyebrow{
+    font-family:var(--font-display);font-weight:700;font-size:.78rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--magenta-500);
+    margin-bottom:10px;display:block;
+  }
+
+  /* ---------- Page loader ---------- */
+  .page-loader{
+    position:fixed;inset:0;z-index:200;
+    background:var(--purple-950);
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .6s ease;
+  }
+  .page-loader.is-hidden{opacity:0;pointer-events:none;}
+  .page-loader img{
+    width:min(200px,50vw);height:auto;
+    animation:loaderPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes loaderPulse{
+    0%,100%{opacity:.32;transform:scale(.94);}
+    50%{opacity:1;transform:scale(1);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .page-loader img{animation:none;opacity:.9;}
+  }
+
+  /* ---------- Click reveal (full-screen cinematic) ---------- */
+  .click-reveal{
+    position:fixed;inset:0;z-index:100;
+    background:#000;
+    opacity:0;visibility:hidden;
+    transition:opacity .45s ease;
+  }
+  .click-reveal.is-active{opacity:1;visibility:visible;}
+  .click-reveal video{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .reveal-close{
+    position:absolute;top:20px;right:20px;z-index:1;
+    width:44px;height:44px;border-radius:50%;
+    background:rgba(0,0,0,.45);color:#fff;border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  }
+  .reveal-close svg{width:20px;height:20px;}
+
+  /* ---------- HERO ---------- */
+  .hero{background:var(--purple-950);cursor:pointer;}
+  .hero-inner{
+    position:relative;overflow:hidden;
+    width:100vw;height:100vh;height:100dvh;
+  }
+  .hero-stage{position:absolute;inset:0;overflow:hidden;background:var(--purple-950);}
+  .hero-bg{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;object-position:80% 50%;
+  }
+  .hero-scrim{
+    position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to right, rgba(0,0,0,.85) 0%, rgba(0,0,0,.45) 55%, rgba(0,0,0,0) 90%);
+  }
+  .jonas-canvas{
+    position:absolute;inset:0;width:100%;height:100%;z-index:3;
+    object-fit:cover;object-position:80% 50%;
+    filter:drop-shadow(0 18px 30px rgba(0,0,0,.45));
+    pointer-events:none;
+  }
+  .jonas-source{
+    position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none;
+  }
+
+  .hero-content{
+    position:absolute;inset:0;z-index:2;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;
+  }
+  .logo-hotspot{
+    position:relative;width:min(1800px,96vw);aspect-ratio:1800/886;
+    margin-inline:auto;cursor:pointer;
+  }
+  .logo-canvas{
+    width:100%;height:100%;object-fit:contain;
+  }
+
+  /* Mobile: logo on top, Jonas confined below it (instead of a full-bleed
+     character behind the logo) — split the hero into a top/bottom half. */
+  @media (max-width:859px){
+    .hero-content{
+      top:0;right:0;left:0;bottom:auto;height:32%;
+    }
+    .jonas-canvas{
+      top:32%;height:68%;bottom:auto;
+      left:0;width:100%;right:auto;
+      object-position:85% 50%;
+    }
+  }
+
+  @media (min-width:860px){
+    .hero-content{
+      top:0;bottom:0;left:8%;right:auto;
+      width:38%;padding:0;
+    }
+    .logo-hotspot{width:min(1900px,52vw);margin-inline:auto;}
+  }
+
+  /* =====================================================
+     LANDING PAGE (revealed after the click-through video)
+     ===================================================== */
+  .landing-page{background:var(--purple-950);}
+
+  /* ---------- Header ---------- */
+  .site-header{
+    position:sticky;top:0;z-index:40;
+    background:rgba(23,10,43,.92);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .header-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding:14px 24px;
+  }
+  .header-logo{height:26px;width:auto;display:block;}
+  .header-nav{display:none;gap:26px;}
+  .header-nav a{
+    font-family:var(--font-body);font-weight:600;font-size:.95rem;
+    color:rgba(255,255,255,.85);text-decoration:none;
+  }
+  .header-nav a:hover{color:var(--gold-300);}
+  .header-cta{padding:10px 20px;font-size:.9rem;flex-shrink:0;}
+  @media (min-width:860px){
+    .header-nav{display:flex;}
+  }
+
+  /* ---------- Hero 2 ---------- */
+  .hero2{
+    position:relative;overflow:hidden;
+    height:80vh;min-height:460px;max-height:760px;
+  }
+  .hero2-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;}
+  .hero2-scrim{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(15,6,28,0) 45%, rgba(15,6,28,.55) 78%, var(--purple-950) 100%);
+  }
+  .hero2-cta-wrap{
+    position:absolute;left:0;right:0;bottom:0;z-index:1;
+    display:flex;justify-content:center;padding:0 24px 48px;
+  }
+
+  /* ---------- Intro title (the headline lives here, below the hero image) ---------- */
+  .intro-title{background:var(--purple-950);padding:76px 0 8px;text-align:center;}
+  .intro-title h1{
+    font-size:clamp(3rem,9vw,5.5rem);color:var(--gold-400);
+    text-shadow:0 6px 0 var(--purple-800);line-height:.95;
+  }
+  .intro-sub{
+    font-family:var(--font-display);font-weight:600;color:#fff;
+    font-size:clamp(1.1rem,2.6vw,1.6rem);margin-top:16px;
+  }
+  .intro-copy{
+    color:rgba(255,255,255,.72);font-size:1.05rem;line-height:1.65;
+    max-width:56ch;margin:20px auto 0;
+  }
+
+  /* ---------- Quick facts strip ---------- */
+  /* ---------- Wave dividers ---------- */
+  .wave{display:block;width:100%;height:auto;position:relative;margin-top:-1px;margin-bottom:-1px;}
+  .fill-cream{fill:var(--cream-50);}
+  .fill-cream-100{fill:var(--cream-100);}
+  .fill-purple{fill:var(--purple-800);}
+  .fill-purple-deep{fill:var(--purple-950);}
+
+  /* wave split into two stacked layers so content (e.g. .pastoras-photo) can be
+     sandwiched between them: cream layer behind it, purple layer in front. */
+  .wave-stack{position:relative;width:100%;aspect-ratio:1440/90;margin-top:-1px;margin-bottom:-1px;}
+  .wave-stack .wave{position:absolute;inset:0;width:100%;height:100%;margin:0;}
+  .wave-back{z-index:5;}
+  .wave-front{z-index:7;}
+
+  /* ---------- Sobre / Quem somos (shared light section) ---------- */
+  .sobre{background:var(--cream-50);padding:96px 0 40px;}
+  .sobre h2{font-size:clamp(1.8rem,4vw,2.6rem);color:var(--ink-900);max-width:18ch;}
+  .sobre-grid{display:grid;gap:40px;align-items:center;}
+  .sobre-copy p{color:var(--ink-700);font-size:1.08rem;line-height:1.65;max-width:56ch;margin-top:16px;}
+  .chips{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px;}
+  .chip{
+    display:flex;align-items:center;gap:10px;
+    background:var(--cream-100);border:1px solid rgba(76,34,120,.12);
+    padding:10px 16px;border-radius:14px;
+    font-weight:700;color:var(--purple-800);font-size:.92rem;
+  }
+  .chip svg{width:20px;height:20px;flex-shrink:0;color:var(--magenta-500);}
+
+  /* ---------- Sobre: shuffling photo stack ---------- */
+  .sobre-stack{
+    position:relative;height:340px;margin-top:20px;
+    justify-self:center;width:100%;max-width:360px;
+  }
+  .stack-photo{
+    position:absolute;top:50%;left:50%;
+    width:66%;aspect-ratio:4/5;border-radius:16px;
+    background:linear-gradient(155deg, var(--cream-100), #ecdcb0);
+    border:1px solid rgba(76,34,120,.14);
+    box-shadow:0 16px 26px -16px rgba(36,19,56,.4);
+    overflow:hidden;
+    color:var(--ink-700);
+    animation:stackShuffle 18s ease-in-out infinite;
+  }
+  .stack-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .stack-photo:nth-child(1){animation-delay:0s;}
+  .stack-photo:nth-child(2){animation-delay:-4.5s;}
+  .stack-photo:nth-child(3){animation-delay:-9s;}
+  .stack-photo:nth-child(4){animation-delay:-13.5s;}
+
+  @keyframes stackShuffle{
+    0%,8%    { transform:translate(-50%,-50%) translate(0,0) rotate(0deg) scale(1); z-index:4; }
+    25%,33%  { transform:translate(-50%,-50%) translate(42%,8%) rotate(9deg) scale(.88); z-index:2; }
+    50%,58%  { transform:translate(-50%,-50%) translate(0,16%) rotate(0deg) scale(.8); z-index:1; }
+    75%,83%  { transform:translate(-50%,-50%) translate(-42%,8%) rotate(-9deg) scale(.88); z-index:2; }
+    100%     { transform:translate(-50%,-50%) translate(0,0) rotate(0deg) scale(1); z-index:4; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .stack-photo{animation:none;}
+    .stack-photo:nth-child(1){transform:translate(-50%,-50%);z-index:4;}
+    .stack-photo:nth-child(2){transform:translate(-50%,-50%) translate(42%,8%) rotate(9deg) scale(.88);z-index:2;}
+    .stack-photo:nth-child(3){transform:translate(-50%,-50%) translate(0,16%) scale(.8);z-index:1;}
+    .stack-photo:nth-child(4){transform:translate(-50%,-50%) translate(-42%,8%) rotate(-9deg) scale(.88);z-index:2;}
+  }
+
+  @media (min-width:860px){
+    .sobre-grid{grid-template-columns:1.1fr .9fr;}
+    .sobre-stack{height:420px;max-width:400px;}
+  }
+
+  /* ---------- Quem somos ---------- */
+  .quem-somos{background:var(--cream-50);padding:40px 0 96px;}
+  /* Grid-based layout: a text column and a photo column that the browser
+     keeps apart by construction, so the photo can never cover the text at
+     any desktop width — no manual pixel math to keep in sync. */
+  .quem-somos-grid{display:grid;gap:32px;}
+  .quem-somos h2{font-size:clamp(1.8rem,4vw,2.6rem);color:var(--ink-900);max-width:18ch;}
+  .quem-somos p{color:var(--ink-700);font-size:1.08rem;line-height:1.65;max-width:62ch;margin-top:16px;}
+  .lideres{display:flex;flex-wrap:wrap;gap:24px;margin-top:32px;}
+  .lider-card{
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    background:#fff;border:1px solid rgba(76,34,120,.12);border-radius:20px;
+    padding:22px 20px 20px;min-width:190px;max-width:230px;flex:1;
+    box-shadow:0 18px 32px -22px rgba(36,19,56,.4);
+  }
+  .lider-photo{
+    width:150px;height:170px;flex-shrink:0;
+    display:flex;align-items:flex-end;justify-content:center;
+    margin-bottom:14px;color:var(--purple-800);
+  }
+  .lider-photo.is-placeholder{
+    background:var(--cream-100);border:1px solid rgba(76,34,120,.12);border-radius:16px;
+    align-items:center;
+  }
+  .lider-photo svg{width:56px;height:56px;opacity:.4;}
+  .lider-photo img{width:100%;height:100%;object-fit:contain;object-position:bottom;}
+  .lider-info strong{display:block;font-family:var(--font-display);color:var(--purple-800);font-size:1.05rem;}
+  .lider-info span{display:block;color:var(--ink-700);font-size:.9rem;margin-top:4px;}
+  .quem-somos-photo{display:none;}
+
+  @media (min-width:860px){
+    .quem-somos-grid{grid-template-columns:1.15fr 0.85fr;align-items:end;}
+    .lideres{justify-content:flex-start;width:fit-content;}
+    .lider-photo{display:none;}
+    .lider-card{padding-top:18px;min-width:170px;}
+    .quem-somos-photo{
+      display:flex;justify-content:center;align-items:flex-end;
+      align-self:end;height:100%;overflow:visible;
+    }
+    .pastoras-photo{
+      display:block;position:relative;z-index:6;
+      width:100%;max-width:620px;height:auto;
+      bottom:-140px;
+      pointer-events:none;
+      filter:drop-shadow(0 14px 20px rgba(36,19,56,.35));
+    }
+  }
+
+  /* ---------- Atrações ---------- */
+  .atracoes{background:var(--purple-800);padding:96px 0;position:relative;z-index:8;}
+  .atracoes .eyebrow{color:var(--gold-300);}
+  .atracoes h2{color:var(--cream-50);font-size:clamp(1.8rem,4vw,2.6rem);max-width:20ch;}
+  .atracoes-grid{
+    display:grid;gap:18px;margin-top:40px;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  }
+  .atracao-card{
+    background:rgba(255,255,255,.05);border:1px solid var(--line-soft);
+    border-radius:20px;padding:26px 22px;
+  }
+  .atracao-icon{
+    width:52px;height:52px;border-radius:14px;
+    background:var(--gold-400);color:var(--purple-950);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;
+  }
+  .atracao-icon svg{width:26px;height:26px;}
+  .atracao-card:nth-child(2) .atracao-icon{background:var(--magenta-500);color:#fff;}
+  .atracao-card:nth-child(3) .atracao-icon{background:var(--cream-50);color:var(--purple-800);}
+  .atracao-card:nth-child(4) .atracao-icon{background:var(--gold-300);color:var(--purple-950);}
+  .atracao-card h3{color:var(--cream-50);font-size:1.15rem;margin-bottom:8px;}
+  .atracao-card p{color:rgba(255,255,255,.75);font-size:.96rem;line-height:1.55;}
+
+  /* ---------- Por que você não pode perder ---------- */
+  .porque{background:var(--purple-950);padding:96px 0;position:relative;}
+  .porque-logo{display:none;}
+  @media (min-width:860px){
+    .porque-logo{
+      display:block;position:absolute;top:32px;right:160px;width:120px;height:187px;
+      background-color:var(--gold-400);
+      -webkit-mask-image:url(assets/kids-logo-branca.png);mask-image:url(assets/kids-logo-branca.png);
+      -webkit-mask-size:contain;mask-size:contain;
+      -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+      -webkit-mask-position:center;mask-position:center;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.35));
+    }
+  }
+  .porque .eyebrow{color:var(--magenta-500);}
+  .porque h2{color:#fff;font-size:clamp(1.8rem,4vw,2.6rem);max-width:22ch;}
+  .porque-intro{color:rgba(255,255,255,.75);font-size:1.08rem;line-height:1.65;max-width:62ch;margin-top:16px;}
+  .porque-grid{
+    display:grid;gap:18px;margin-top:40px;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  }
+  .porque-card{padding:4px;}
+  .porque-num{
+    font-family:var(--font-display);font-weight:800;font-size:1.6rem;
+    color:var(--gold-400);line-height:1;margin-bottom:10px;display:block;
+  }
+  .porque-card h3{color:#fff;font-size:1.1rem;margin-bottom:8px;}
+  .porque-card p{color:rgba(255,255,255,.7);font-size:.95rem;line-height:1.55;}
+
+  /* ---------- Momentos (carrossel) ---------- */
+  .momentos{background:var(--cream-50);padding:96px 0;overflow:hidden;}
+  .momentos-head{margin-bottom:32px;}
+  .momentos h2{font-size:clamp(1.8rem,4vw,2.6rem);color:var(--ink-900);}
+  .carousel{position:relative;display:flex;align-items:center;gap:10px;}
+  .carousel-track{
+    display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding:4px 24px 20px;scrollbar-width:none;
+  }
+  .carousel-track::-webkit-scrollbar{display:none;}
+  .car-card{flex:0 0 auto;width:240px;scroll-snap-align:start;margin:0;}
+  .car-photo{
+    width:100%;aspect-ratio:4/5;border-radius:20px;
+    background:linear-gradient(155deg, var(--cream-100), #ecdcb0);
+    border:1px solid rgba(76,34,120,.12);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    color:var(--ink-700);overflow:hidden;
+  }
+  .car-photo svg{width:38px;height:38px;opacity:.55;}
+  .car-photo span{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.6;}
+  .car-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .car-card figcaption{
+    margin-top:12px;font-family:var(--font-display);font-weight:600;
+    color:var(--ink-900);font-size:.98rem;
+  }
+  .car-btn{
+    flex-shrink:0;width:44px;height:44px;border-radius:50%;
+    background:#fff;border:1px solid rgba(76,34,120,.15);
+    color:var(--purple-800);cursor:pointer;
+    align-items:center;justify-content:center;
+    box-shadow:0 10px 20px -12px rgba(36,19,56,.35);
+    display:none;
+  }
+  .car-btn svg{width:20px;height:20px;}
+  @media (min-width:720px){ .car-btn{display:flex;} }
+
+  /* ---------- Informações ---------- */
+  .info{background:var(--cream-100);padding:96px 0;}
+  .info h2{font-size:clamp(1.8rem,4vw,2.6rem);color:var(--ink-900);}
+  .info-panel{
+    margin-top:40px;background:#fff;border-radius:28px;
+    padding:36px;border:1px solid rgba(76,34,120,.1);
+    box-shadow:0 30px 60px -30px rgba(36,19,56,.35);
+  }
+  .info-grid{
+    display:grid;gap:28px;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  }
+  .info-card svg{width:26px;height:26px;color:var(--magenta-500);}
+  .info-card h3{
+    font-family:var(--font-body);font-weight:700;font-size:.78rem;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-700);
+    margin:12px 0 4px;
+  }
+  .info-card p{font-family:var(--font-display);font-size:1.2rem;color:var(--ink-900);line-height:1.3;}
+  .info-panel-footer{
+    margin-top:32px;padding-top:28px;border-top:1px dashed rgba(76,34,120,.2);
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;
+  }
+  .info-free{
+    font-family:var(--font-display);font-weight:700;color:var(--purple-800);
+    font-size:1.05rem;
+  }
+  .info-card a{text-decoration:underline;text-decoration-color:var(--magenta-500);text-underline-offset:3px;}
+
+  /* ---------- CTA final ---------- */
+  .cta-final{
+    background:radial-gradient(120% 100% at 50% 70%, var(--purple-700) 0%, var(--purple-950) 70%);
+    padding:96px 0 104px;text-align:center;color:var(--cream-50);
+  }
+  .cta-final h2{font-size:clamp(2rem,5vw,3rem);color:#fff;}
+  .cta-final p{margin-top:14px;color:rgba(255,255,255,.8);font-size:1.08rem;max-width:44ch;margin-inline:auto;}
+  .cta-final .btn-cta{margin-top:30px;font-size:1.15rem;padding:18px 36px;}
+
+  /* ---------- Footer ---------- */
+  .site-footer{background:var(--purple-950);border-top:1px solid var(--line-soft);padding:30px 0;}
+  .footer-inner{
+    display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;
+    color:rgba(255,255,255,.55);font-size:.85rem;
+  }
+  .footer-inner strong{color:var(--gold-300);font-family:var(--font-display);font-size:1rem;}
+</style>
+
+<div class="page-loader" id="pageLoader" aria-hidden="true">
+  <img src="assets/acrtv-logo.png" alt="">
+</div>
+
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-stage" id="heroStage">
+      <video class="hero-bg" autoplay muted loop playsinline aria-hidden="true">
+        <source src="assets/bg-loop-mobile.mp4" media="(max-width:859px)">
+        <source src="assets/bg-loop.mp4">
+      </video>
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <video class="jonas-source" id="jonasSourceVideo" src="assets/jonas-matte.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+    </div>
+    <div class="hero-content">
+      <div class="logo-hotspot" id="logoHotspot">
+        <canvas class="logo-canvas" id="logoCanvas" aria-hidden="true"></canvas>
+        <video class="jonas-source" id="logoSourceVideo" src="assets/logo-anim.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+      </div>
+      <p class="visually-hidden">Funday — Musical Vai, vai Jonas — 03 de outubro, 14h — Igreja Batista Atitude Sede, Rua Sylvio da Rocha Pollis, 751</p>
+    </div>
+    <canvas class="jonas-canvas" id="jonasCanvas" aria-hidden="true"></canvas>
+  </div>
+</section>
+
+<div class="click-reveal" id="clickReveal" aria-hidden="true">
+  <button class="reveal-close" id="revealClose" type="button" aria-label="Fechar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <video id="revealVideo" playsinline preload="none">
+    <source src="assets/transitionmobile.mp4" media="(max-width:859px)">
+    <source src="assets/poslogoclick.mp4">
+  </video>
+</div>
+
+<div class="landing-page" id="landingPage" hidden>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <img class="header-logo" src="assets/header-logo.png" alt="Funday">
+      <nav class="header-nav">
+        <a href="#sobre">Sobre</a>
+        <a href="#quem-somos">Quem somos</a>
+        <a href="#atracoes">Atrações</a>
+        <a href="#informacoes">Informações</a>
+      </nav>
+      <a class="btn-cta header-cta" href="https://www.engagesuite.com.br/camp/igreja-batista-atitude-da-barra-funday-2026?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZnRzaAUXsbVwZG9mAmZkaWQWUOh4upYrW1BH-_XWaRdj8gQ7NajXl2V4dG4DYWVtATEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGneGqZL5ZN4gFzCu-4ek6CV4BiOTbJXLtQFOqiM3u7Wg1tixRCB7EbksxlKqg_aem_lazBcciDIjFnihPdeC3giA" target="_blank" rel="noopener">Inscreva-se</a>
+    </div>
+  </header>
+
+  <section class="hero2">
+    <video class="hero2-bg" autoplay muted loop playsinline aria-hidden="true">
+      <source src="assets/bg-loop-mobile.mp4" media="(max-width:859px)">
+      <source src="assets/bg-loop.mp4">
+    </video>
+    <div class="hero2-scrim"></div>
+    <div class="hero2-cta-wrap">
+      <a class="btn-cta" href="https://www.engagesuite.com.br/camp/igreja-batista-atitude-da-barra-funday-2026?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZnRzaAUXsbVwZG9mAmZkaWQWUOh4upYrW1BH-_XWaRdj8gQ7NajXl2V4dG4DYWVtATEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGneGqZL5ZN4gFzCu-4ek6CV4BiOTbJXLtQFOqiM3u7Wg1tixRCB7EbksxlKqg_aem_lazBcciDIjFnihPdeC3giA" target="_blank" rel="noopener">
+        Quero me inscrever
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <section class="intro-title">
+    <div class="wrap">
+      <h1>FUNDAY</h1>
+      <p class="intro-sub">Musical Vai, vai Jonas</p>
+      <p class="intro-copy">Um dia inteiro de brincadeiras, música e um musical inesquecível — pensado pra sua família viver junto o maior encontro de todos.</p>
+    </div>
+  </section>
+
+  <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <rect class="fill-purple-deep" x="-2" y="-2" width="1444" height="94"></rect>
+    <path class="fill-cream" d="M0,32 C240,90 480,0 720,24 C960,48 1200,90 1440,40 L1440,92 L0,92 Z"></path>
+  </svg>
+
+  <section class="sobre" id="sobre">
+    <div class="wrap sobre-grid">
+      <div class="sobre-copy">
+        <span class="eyebrow">O que é o Funday</span>
+        <h2>Diversão que leva ao encontro com Jesus</h2>
+        <p>O Funday é um dia preparado especialmente para as crianças celebrarem, se divertirem e viverem experiências que vão marcar a infância! Uma programação completa com brinquedos, muita diversão, momentos de comunhão e um musical cheio de propósito, o "Vai, Vai, Jonas", com base no texto bíblico de Jonas 1:1.</p>
+        <p>Tudo pensado para proporcionar alegria, fortalecer vínculos e, acima de tudo, apresentar o amor de Jesus aos pequenos e suas famílias. Mais do que um dia divertido, o Funday é uma oportunidade de evangelizar, criar conexões e construir momentos inesquecíveis na caminhada de cada criança.</p>
+        <div class="chips">
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            Musical ao vivo
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18M3 12h18"/></svg>
+            Brincadeiras pra todo mundo
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="7" cy="8" r="3.2"/><path d="M17.5 14.5A3.5 3.5 0 0 0 20 8"/><path d="M15.2 4.6a3.5 3.5 0 0 1 0 6.8"/></svg>
+            Pra toda a família
+          </span>
+        </div>
+      </div>
+      <div class="sobre-stack" aria-hidden="true">
+        <div class="stack-photo"><img src="assets/sobre-4.jpg" alt=""></div>
+        <div class="stack-photo"><img src="assets/sobre-2.jpg" alt=""></div>
+        <div class="stack-photo"><img src="assets/sobre-3.jpg" alt=""></div>
+        <div class="stack-photo"><img src="assets/sobre-1.jpg" alt=""></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quem-somos" id="quem-somos">
+    <div class="wrap quem-somos-grid">
+      <div class="quem-somos-copy">
+        <span class="eyebrow">Quem somos</span>
+        <h2>Atitude Kids</h2>
+        <p>Somos o Atitude Kids, o ministério infantil da Igreja Batista Atitude, liderado pela Pra. Wilzy Adorno, que também engloba o ministério de pré-adolescentes Sub13, liderado pela Pra. Bárbara Cabral.</p>
+        <p>Existimos para alcançar crianças e pré-adolescentes para Cristo, ensiná-los a viver a fé de forma prática e ajudá-los a crescer como discípulos de atitude.</p>
+        <div class="lideres">
+          <div class="lider-card">
+            <div class="lider-photo">
+              <img src="assets/wilzy-adorno.png" alt="Pra. Wilzy Adorno">
+            </div>
+            <div class="lider-info">
+              <strong>Pra. Wilzy Adorno</strong>
+              <span>Ministério infantil — Atitude Kids</span>
+            </div>
+          </div>
+          <div class="lider-card">
+            <div class="lider-photo">
+              <img src="assets/barbara-cabral.png" alt="Pra. Bárbara Cabral">
+            </div>
+            <div class="lider-info">
+              <strong>Pra. Bárbara Cabral</strong>
+              <span>Pré-adolescentes — Sub13</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quem-somos-photo">
+        <img class="pastoras-photo" src="assets/pastoras.png" alt="Pra. Wilzy Adorno e Pra. Bárbara Cabral">
+      </div>
+    </div>
+  </section>
+
+  <div class="wave-stack">
+    <svg class="wave wave-back" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path class="fill-cream" d="M0,50 C240,0 480,90 720,44 C960,0 1200,60 1440,20 L1440,-2 L0,-2 Z"></path>
+    </svg>
+    <svg class="wave wave-front" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path class="fill-purple" d="M0,50 C240,0 480,90 720,44 C960,0 1200,60 1440,20 L1440,92 L0,92 Z"></path>
+    </svg>
+  </div>
+
+  <section class="atracoes" id="atracoes">
+    <div class="wrap">
+      <span class="eyebrow">O dia vai ter</span>
+      <h2>Atrações pra criançada não parar</h2>
+      <div class="atracoes-grid">
+        <article class="atracao-card">
+          <div class="atracao-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <h3>Musical ao vivo</h3>
+          <p>O espetáculo Vai, vai Jonas — contado com música, cenário e muita emoção.</p>
+        </article>
+        <article class="atracao-card">
+          <div class="atracao-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 1 5 5c0 3-2 5-3 6.5V17a2 2 0 0 1-4 0v-3.5C9 12 7 10 7 7a5 5 0 0 1 5-5Z"/><path d="M12 17v4M9 21h6"/></svg>
+          </div>
+          <h3>Brinquedos infláveis</h3>
+          <p>Pula-pula, escorregadores e muito espaço pra gastar energia.</p>
+        </article>
+        <article class="atracao-card">
+          <div class="atracao-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L11 16l-4.5 1.5L8 13Z"/><path d="M7.5 16.5L4 20"/></svg>
+          </div>
+          <h3>Pintura facial e oficinas</h3>
+          <p>Ateliês de pintura e artesanato pra criançada soltar a criatividade.</p>
+        </article>
+        <article class="atracao-card">
+          <div class="atracao-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l-1.4 12.8a3 3 0 0 1-3 2.7h-3.2a3 3 0 0 1-3-2.7Z"/><path d="M5 8h14"/></svg>
+          </div>
+          <h3>Praça de alimentação</h3>
+          <p>Lanches e bebidas à venda no local, pra ninguém passar fome.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <rect class="fill-purple" x="-2" y="-2" width="1444" height="94"></rect>
+    <path class="fill-purple-deep" d="M0,32 C240,90 480,0 720,24 C960,48 1200,90 1440,40 L1440,92 L0,92 Z"></path>
+  </svg>
+
+  <section class="porque">
+    <div class="porque-logo" role="img" aria-label="Atitude Kids"></div>
+    <div class="wrap">
+      <span class="eyebrow">Não fica de fora</span>
+      <h2>Por que as crianças não podem deixar de participar?</h2>
+      <p class="porque-intro">O Funday é um evento direcionado totalmente para as crianças, com foco na diversão que aponta para Jesus. Toda criança precisa experimentar a alegria de viver uma infância com Cristo, fortalecendo a fé, aprendendo sobre a Palavra de Deus e vivendo essa fase maravilhosa na comunhão!</p>
+      <div class="porque-grid">
+        <div class="porque-card">
+          <span class="porque-num">14h – 15h</span>
+          <h3>1º Musical</h3>
+          <p>Primeira sessão do espetáculo Vai, vai Jonas — música, cenário e emoção pra abrir o dia.</p>
+        </div>
+        <div class="porque-card">
+          <span class="porque-num">15h – 16h</span>
+          <h3>Brincadeiras</h3>
+          <p>Hora de aproveitar os brinquedos infláveis e as demais atrações do Funday.</p>
+        </div>
+        <div class="porque-card">
+          <span class="porque-num">16h – 17h</span>
+          <h3>2º Musical</h3>
+          <p>Segunda sessão de Vai, vai Jonas, pra quem quer assistir de novo ou chegou mais tarde.</p>
+        </div>
+        <div class="porque-card">
+          <span class="porque-num">17h – 18h</span>
+          <h3>Brincadeiras</h3>
+          <p>Última rodada nos brinquedos antes de encerrar essa aventura com Jonas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <rect class="fill-purple-deep" x="-2" y="-2" width="1444" height="94"></rect>
+    <path class="fill-cream" d="M0,32 C240,90 480,0 720,24 C960,48 1200,90 1440,40 L1440,92 L0,92 Z"></path>
+  </svg>
+
+  <section class="momentos" id="momentos">
+    <div class="wrap momentos-head">
+      <span class="eyebrow">Momentos do Funday</span>
+      <h2>Experiências para se viver!</h2>
+    </div>
+    <div class="carousel">
+      <button class="car-btn car-prev" id="carPrev" type="button" aria-label="Foto anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="carousel-track" id="carouselTrack">
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-q.jpg" alt=""></div>
+        <figcaption>Diversão sem limites</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-w.jpg" alt=""></div>
+        <figcaption>Brincadeiras o dia inteiro</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-e.jpg" alt=""></div>
+        <figcaption>Toda a família junta</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-r.jpg" alt=""></div>
+        <figcaption>Um musical inesquecível</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-t.jpg" alt=""></div>
+        <figcaption>Momentos pra guardar</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-y.jpg" alt=""></div>
+        <figcaption>Diversão sem limites</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-u.jpg" alt=""></div>
+        <figcaption>Brincadeiras o dia inteiro</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-i.jpg" alt=""></div>
+        <figcaption>Toda a família junta</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-o.jpg" alt=""></div>
+        <figcaption>Um musical inesquecível</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-p.jpg" alt=""></div>
+        <figcaption>Momentos pra guardar</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-a.jpg" alt=""></div>
+        <figcaption>Diversão sem limites</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-s.jpg" alt=""></div>
+        <figcaption>Brincadeiras o dia inteiro</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-d.jpg" alt=""></div>
+        <figcaption>Toda a família junta</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-f.jpg" alt=""></div>
+        <figcaption>Um musical inesquecível</figcaption>
+        </figure>
+        <figure class="car-card">
+          <div class="car-photo"><img src="assets/momento-g.jpg" alt=""></div>
+        <figcaption>Momentos pra guardar</figcaption>
+        </figure>
+      </div>
+      <button class="car-btn car-next" id="carNext" type="button" aria-label="Próxima foto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <rect class="fill-cream-100" x="-2" y="-2" width="1444" height="94"></rect>
+    <path class="fill-cream" d="M0,50 C240,0 480,90 720,44 C960,0 1200,60 1440,20 L1440,-2 L0,-2 Z"></path>
+  </svg>
+
+  <section class="info" id="informacoes">
+    <div class="wrap">
+      <span class="eyebrow">Informações</span>
+      <h2>Guarde a data</h2>
+      <div class="info-panel">
+        <div class="info-grid">
+          <div class="info-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+            <h3>Data</h3>
+            <p>03 de outubro</p>
+          </div>
+          <div class="info-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+            <h3>Horário</h3>
+            <p>14h</p>
+          </div>
+          <div class="info-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            <h3>Local</h3>
+            <p><a href="https://www.google.com/maps/search/?api=1&query=Rua+Sylvio+da+Rocha+Pollis%2C+751" target="_blank" rel="noopener">Igreja Batista Atitude Sede<br>Rua Sylvio da Rocha Pollis, 751</a></p>
+          </div>
+          <div class="info-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="7" cy="8" r="3.2"/><path d="M17.5 14.5A3.5 3.5 0 0 0 20 8"/><path d="M15.2 4.6a3.5 3.5 0 0 1 0 6.8"/></svg>
+            <h3>Público</h3>
+            <p>Crianças em geral, com a família</p>
+          </div>
+        </div>
+        <div class="info-panel-footer">
+          <span class="info-free">Entrada gratuita · vagas limitadas</span>
+          <a class="btn-cta" href="https://www.engagesuite.com.br/camp/igreja-batista-atitude-da-barra-funday-2026?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZnRzaAUXsbVwZG9mAmZkaWQWUOh4upYrW1BH-_XWaRdj8gQ7NajXl2V4dG4DYWVtATEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGneGqZL5ZN4gFzCu-4ek6CV4BiOTbJXLtQFOqiM3u7Wg1tixRCB7EbksxlKqg_aem_lazBcciDIjFnihPdeC3giA" target="_blank" rel="noopener">
+            Quero me inscrever
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <rect class="fill-purple-deep" x="-2" y="-2" width="1444" height="94"></rect>
+    <path class="fill-cream-100" d="M0,50 C240,0 480,90 720,44 C960,0 1200,60 1440,20 L1440,-2 L0,-2 Z"></path>
+  </svg>
+
+  <section class="cta-final">
+    <div class="wrap">
+      <h2>Traga sua família pro Funday!</h2>
+      <p>Vagas gratuitas e limitadas — garanta a presença da criançada nessa aventura com Jonas.</p>
+      <a class="btn-cta" href="https://www.engagesuite.com.br/camp/igreja-batista-atitude-da-barra-funday-2026?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZnRzaAUXsbVwZG9mAmZkaWQWUOh4upYrW1BH-_XWaRdj8gQ7NajXl2V4dG4DYWVtATEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGneGqZL5ZN4gFzCu-4ek6CV4BiOTbJXLtQFOqiM3u7Wg1tixRCB7EbksxlKqg_aem_lazBcciDIjFnihPdeC3giA" target="_blank" rel="noopener">
+        Quero me inscrever
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <strong>Igreja Batista Atitude</strong>
+      <span>Rua Sylvio da Rocha Pollis, 751</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DURATION = 3; // seconds — matches both the Jonas and logo source clips
+
+  var hero = document.getElementById('hero');
+  var logoHotspot = document.getElementById('logoHotspot');
+  var jonasSource = document.getElementById('jonasSourceVideo');
+  var jonasCanvas = document.getElementById('jonasCanvas');
+  var logoSource = document.getElementById('logoSourceVideo');
+  var logoCanvas = document.getElementById('logoCanvas');
+  var heroBgVideo = document.querySelector('.hero-bg');
+
+  // --- Page loader: stays up until the hero's own videos are actually
+  // ready to play smoothly, so nothing flashes blank/unstyled underneath. ---
+  (function(){
+    var loader = document.getElementById('pageLoader');
+    if (!loader) return;
+    var watched = [heroBgVideo, jonasSource, logoSource].filter(Boolean);
+    var pending = watched.length;
+    var minTimeDone = false, assetsDone = pending === 0, hidden = false;
+
+    function reveal(){
+      if (hidden || !minTimeDone || !assetsDone) return;
+      hidden = true;
+      loader.classList.add('is-hidden');
+      loader.addEventListener('transitionend', function(){ loader.hidden = true; }, { once: true });
+    }
+    function onOneReady(){
+      pending -= 1;
+      if (pending <= 0){ assetsDone = true; reveal(); }
+    }
+
+    watched.forEach(function(v){
+      if (v.readyState >= 4){ onOneReady(); return; } // HAVE_ENOUGH_DATA already
+      v.addEventListener('canplaythrough', onOneReady, { once: true });
+      v.addEventListener('error', onOneReady, { once: true }); // never block on a failed asset
+    });
+    setTimeout(function(){ minTimeDone = true; reveal(); }, 500);
+    setTimeout(function(){ assetsDone = true; reveal(); }, 9000); // safety fallback
+  })();
+
+  function primeVideo(video){
+    try{
+      var p = video.play();
+      if (p && p.then){ p.then(function(){ video.pause(); }).catch(function(){}); }
+      else { video.pause(); }
+    }catch(e){}
+  }
+
+  // Drives a hidden <video> by currentTime and re-draws a canvas once each
+  // seek actually lands (seeks are queued so we never fall behind a video's
+  // own decode speed while scrubbing every rAF tick).
+  function createScrubber(video, drawFrame){
+    var seeking = false, pending = null;
+    function onSeeked(){
+      video.removeEventListener('seeked', onSeeked);
+      seeking = false;
+      drawFrame();
+      if (pending !== null){ var t = pending; pending = null; seekTo(t); }
+    }
+    function seekTo(t){
+      if (seeking){ pending = t; return; }
+      seeking = true;
+      video.addEventListener('seeked', onSeeked);
+      try{ video.currentTime = Math.max(0, Math.min(DURATION, t)); }
+      catch(e){ seeking = false; }
+    }
+    return { seekTo: seekTo };
+  }
+
+  // --- Jonas: ships as one video, RGB stacked above its own luma matte ---
+  var jonasCtx = jonasCanvas.getContext('2d');
+  var jonasRgbCanvas = document.createElement('canvas');
+  var jonasRgbCtx = jonasRgbCanvas.getContext('2d');
+  var jonasMatteCanvas = document.createElement('canvas');
+  var jonasMatteCtx = jonasMatteCanvas.getContext('2d');
+  var jonasW = 0, jonasH = 0, jonasScrub = null;
+
+  function drawJonasFrame(){
+    jonasRgbCtx.drawImage(jonasSource, 0, 0, jonasW, jonasH, 0, 0, jonasW, jonasH);
+    jonasMatteCtx.drawImage(jonasSource, 0, jonasH, jonasW, jonasH, 0, 0, jonasW, jonasH);
+    var rgbData = jonasRgbCtx.getImageData(0, 0, jonasW, jonasH);
+    var matteData = jonasMatteCtx.getImageData(0, 0, jonasW, jonasH);
+    var px = rgbData.data, mx = matteData.data;
+    for (var i = 3; i < px.length; i += 4){ px[i] = mx[i - 3]; }
+    jonasCtx.clearRect(0, 0, jonasW, jonasH);
+    jonasCtx.putImageData(rgbData, 0, 0);
+  }
+
+  jonasSource.addEventListener('loadedmetadata', function(){
+    jonasW = jonasSource.videoWidth;
+    jonasH = jonasSource.videoHeight / 2;
+    jonasRgbCanvas.width = jonasMatteCanvas.width = jonasCanvas.width = jonasW;
+    jonasRgbCanvas.height = jonasMatteCanvas.height = jonasCanvas.height = jonasH;
+    primeVideo(jonasSource);
+    jonasScrub = createScrubber(jonasSource, drawJonasFrame);
+    jonasScrub.seekTo(0);
+  });
+
+  // --- Logo: no alpha track at all, just text on a near-black plate. We key
+  // the black out ourselves (alpha from brightness) so it composites fully
+  // opaque instead of the washed-out look mix-blend-mode gave it. ---
+  var logoCtx = logoCanvas.getContext('2d');
+  var logoRgbCanvas = document.createElement('canvas');
+  var logoRgbCtx = logoRgbCanvas.getContext('2d');
+  var logoW = 0, logoH = 0, logoScrub = null;
+  var KEY_BLACK = 32, KEY_WHITE = 65; // luma range keyed from transparent to fully opaque
+
+  function drawLogoFrame(){
+    logoRgbCtx.drawImage(logoSource, 0, 0, logoW, logoH);
+    var frame = logoRgbCtx.getImageData(0, 0, logoW, logoH);
+    var d = frame.data;
+    for (var i = 0; i < d.length; i += 4){
+      var luma = Math.max(d[i], d[i + 1], d[i + 2]);
+      var a = (luma - KEY_BLACK) / (KEY_WHITE - KEY_BLACK);
+      d[i + 3] = a <= 0 ? 0 : (a >= 1 ? 255 : Math.round(a * 255));
+    }
+    logoCtx.clearRect(0, 0, logoW, logoH);
+    logoCtx.putImageData(frame, 0, 0);
+  }
+
+  logoSource.addEventListener('loadedmetadata', function(){
+    logoW = logoSource.videoWidth;
+    logoH = logoSource.videoHeight;
+    logoRgbCanvas.width = logoCanvas.width = logoW;
+    logoRgbCanvas.height = logoCanvas.height = logoH;
+    primeVideo(logoSource);
+    logoScrub = createScrubber(logoSource, drawLogoFrame);
+    logoScrub.seekTo(0);
+  });
+
+  var currentT = 0, targetT = 0, rafId = null, lastTime = null;
+  var FORWARD_RATE = 1, REVERSE_RATE = 1.6;
+  var revealPending = false;
+
+  function tick(now){
+    if (lastTime === null) lastTime = now;
+    var dt = (now - lastTime) / 1000;
+    lastTime = now;
+
+    if (currentT < targetT) currentT = Math.min(targetT, currentT + dt * FORWARD_RATE);
+    else if (currentT > targetT) currentT = Math.max(targetT, currentT - dt * REVERSE_RATE);
+
+    if (jonasScrub) jonasScrub.seekTo(currentT);
+    if (logoScrub) logoScrub.seekTo(currentT);
+
+    if (currentT !== targetT) rafId = requestAnimationFrame(tick);
+    else {
+      rafId = null; lastTime = null;
+      if (revealPending && currentT === DURATION){
+        revealPending = false;
+        openReveal();
+      }
+    }
+  }
+
+  function goTo(target){
+    targetT = target;
+    if (reduceMotion){
+      currentT = target;
+      if (jonasScrub) jonasScrub.seekTo(target);
+      if (logoScrub) logoScrub.seekTo(target);
+      if (revealPending && target === DURATION){
+        revealPending = false;
+        openReveal();
+      }
+      return;
+    }
+    if (!rafId){ lastTime = null; rafId = requestAnimationFrame(tick); }
+  }
+
+  logoHotspot.addEventListener('mouseenter', function(){ goTo(DURATION); });
+  logoHotspot.addEventListener('mouseleave', function(){ if (!revealPending) goTo(0); });
+  logoHotspot.addEventListener('touchstart', function(){ goTo(DURATION); }, { passive: true });
+  logoHotspot.addEventListener('touchend', function(){ if (!revealPending) goTo(0); });
+
+  // --- Full-screen cinematic on click ---
+  var clickReveal = document.getElementById('clickReveal');
+  var revealVideo = document.getElementById('revealVideo');
+  var revealClose = document.getElementById('revealClose');
+
+  function openReveal(){
+    clickReveal.classList.add('is-active');
+    clickReveal.setAttribute('aria-hidden', 'false');
+    try{
+      revealVideo.currentTime = 0;
+      var p = revealVideo.play();
+      if (p && p.catch) p.catch(function(){});
+    }catch(e){}
+  }
+
+  // Click always finishes the Jonas+logo animation before revealing the
+  // cinematic: if it's already sitting on the last frame (mouse held over
+  // it after hover-in completed), the reveal fires instantly; otherwise it
+  // keeps playing forward on its own and the reveal fires the moment it
+  // reaches the end. Once committed, mouseleave/touchend no longer reverse it.
+  function requestReveal(){
+    if (revealPending) return;
+    revealPending = true;
+    goTo(DURATION);
+    if (currentT === DURATION && targetT === DURATION){
+      revealPending = false;
+      openReveal();
+    }
+  }
+  // Both finishing the video and closing it early open the full landing
+  // page — the gate hero + cinematic are done at that point either way.
+  var landingPage = document.getElementById('landingPage');
+  function showLandingPage(){
+    clickReveal.classList.remove('is-active');
+    clickReveal.setAttribute('aria-hidden', 'true');
+    revealVideo.pause();
+    hero.hidden = true;
+    landingPage.hidden = false;
+    document.body.classList.add('landing-open');
+    window.scrollTo(0, 0);
+  }
+
+  // Clicking anywhere in the hero commits to the reveal — not just the logo —
+  // so the click target no longer has to be precise.
+  hero.addEventListener('click', requestReveal);
+  revealClose.addEventListener('click', showLandingPage);
+  revealVideo.addEventListener('ended', showLandingPage);
+
+  var carTrack = document.getElementById('carouselTrack');
+  var carPrev = document.getElementById('carPrev');
+  var carNext = document.getElementById('carNext');
+  if (carTrack && carPrev && carNext){
+    var scrollByCard = function(dir){
+      var card = carTrack.querySelector('.car-card');
+      var step = card ? card.getBoundingClientRect().width + 20 : 260;
+      carTrack.scrollBy({ left: dir * step, behavior: reduceMotion ? 'auto' : 'smooth' });
+    };
+    carPrev.addEventListener('click', function(){ scrollByCard(-1); });
+    carNext.addEventListener('click', function(){ scrollByCard(1); });
+  }
+})();
+</script>
