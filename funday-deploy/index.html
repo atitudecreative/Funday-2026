@@ -495,10 +495,7 @@
 <section class="hero" id="hero">
   <div class="hero-inner">
     <div class="hero-stage" id="heroStage">
-      <video class="hero-bg" autoplay muted loop playsinline aria-hidden="true">
-        <source src="assets/bg-loop-mobile.mp4" media="(max-width:859px)">
-        <source src="assets/bg-loop.mp4">
-      </video>
+      <video class="hero-bg" data-src-desktop="assets/bg-loop.mp4" data-src-mobile="assets/bg-loop-mobile.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
       <div class="hero-scrim" aria-hidden="true"></div>
       <video class="jonas-source" id="jonasSourceVideo" src="assets/jonas-matte.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
     </div>
@@ -517,10 +514,7 @@
   <button class="reveal-close" id="revealClose" type="button" aria-label="Fechar">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
   </button>
-  <video id="revealVideo" playsinline preload="none">
-    <source src="assets/transitionmobile.mp4" media="(max-width:859px)">
-    <source src="assets/poslogoclick.mp4">
-  </video>
+  <video id="revealVideo" data-src-desktop="assets/poslogoclick.mp4" data-src-mobile="assets/transitionmobile.mp4" playsinline preload="none"></video>
 </div>
 
 <div class="landing-page" id="landingPage" hidden>
@@ -539,10 +533,7 @@
   </header>
 
   <section class="hero2">
-    <video class="hero2-bg" autoplay muted loop playsinline aria-hidden="true">
-      <source src="assets/bg-loop-mobile.mp4" media="(max-width:859px)">
-      <source src="assets/bg-loop.mp4">
-    </video>
+    <video class="hero2-bg" data-src-desktop="assets/bg-loop.mp4" data-src-mobile="assets/bg-loop-mobile.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
     <div class="hero2-scrim"></div>
     <div class="hero2-cta-wrap">
       <a class="btn-cta" href="https://www.engagesuite.com.br/camp/igreja-batista-atitude-da-barra-funday-2026?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZnRzaAUXsbVwZG9mAmZkaWQWUOh4upYrW1BH-_XWaRdj8gQ7NajXl2V4dG4DYWVtATEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGneGqZL5ZN4gFzCu-4ek6CV4BiOTbJXLtQFOqiM3u7Wg1tixRCB7EbksxlKqg_aem_lazBcciDIjFnihPdeC3giA" target="_blank" rel="noopener">
@@ -874,6 +865,14 @@
   var logoSource = document.getElementById('logoSourceVideo');
   var logoCanvas = document.getElementById('logoCanvas');
   var heroBgVideo = document.querySelector('.hero-bg');
+
+  // Pick the right video source ourselves (instead of relying on <source
+  // media>, which some mobile browsers re-evaluate inconsistently): read
+  // window.innerWidth directly, once, before anything starts loading.
+  var isMobileViewport = window.innerWidth <= 859;
+  [].forEach.call(document.querySelectorAll('video[data-src-desktop]'), function(v){
+    v.src = isMobileViewport && v.getAttribute('data-src-mobile') ? v.getAttribute('data-src-mobile') : v.getAttribute('data-src-desktop');
+  });
 
   // --- Page loader: stays up until the hero's own videos are actually
   // ready to play smoothly, so nothing flashes blank/unstyled underneath. ---
