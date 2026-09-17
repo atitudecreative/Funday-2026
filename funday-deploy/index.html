@@ -924,9 +924,14 @@
     }
     function seekTo(t){
       if (seeking){ pending = t; return; }
+      var clamped = Math.max(0, Math.min(DURATION, t));
+      // If we're already at that time (e.g. the very first seekTo(0), right
+      // where currentTime starts out), setting currentTime again is a no-op
+      // that never fires 'seeked' — draw directly instead of waiting for it.
+      if (Math.abs(video.currentTime - clamped) < 0.001){ drawFrame(); return; }
       seeking = true;
       video.addEventListener('seeked', onSeeked);
-      try{ video.currentTime = Math.max(0, Math.min(DURATION, t)); }
+      try{ video.currentTime = clamped; }
       catch(e){ seeking = false; }
     }
     return { seekTo: seekTo };
@@ -951,7 +956,7 @@
     jonasCtx.putImageData(rgbData, 0, 0);
   }
 
-  jonasSource.addEventListener('loadedmetadata', function(){
+  function onJonasMetadata(){
     jonasW = jonasSource.videoWidth;
     jonasH = jonasSource.videoHeight / 2;
     jonasRgbCanvas.width = jonasMatteCanvas.width = jonasCanvas.width = jonasW;
@@ -959,7 +964,16 @@
     primeVideo(jonasSource);
     jonasScrub = createScrubber(jonasSource, drawJonasFrame);
     jonasScrub.seekTo(0);
-  });
+    // Belt-and-braces: the very first frame may not be decoded yet at this
+    // exact point (primeVideo's play() hasn't resolved), so also repaint the
+    // moment real frame data is confirmed available.
+    jonasSource.addEventListener('loadeddata', drawJonasFrame, { once: true });
+  }
+  // Small/cached videos can already have metadata (readyState>=1) by the
+  // time this listener attaches — the 'loadedmetadata' event has already
+  // fired and would otherwise never come again, leaving the canvas blank.
+  if (jonasSource.readyState >= 1) onJonasMetadata();
+  else jonasSource.addEventListener('loadedmetadata', onJonasMetadata);
 
   // --- Logo: no alpha track at all, just text on a near-black plate. We key
   // the black out ourselves (alpha from brightness) so it composites fully
@@ -983,7 +997,7 @@
     logoCtx.putImageData(frame, 0, 0);
   }
 
-  logoSource.addEventListener('loadedmetadata', function(){
+  function onLogoMetadata(){
     logoW = logoSource.videoWidth;
     logoH = logoSource.videoHeight;
     logoRgbCanvas.width = logoCanvas.width = logoW;
@@ -991,7 +1005,10 @@
     primeVideo(logoSource);
     logoScrub = createScrubber(logoSource, drawLogoFrame);
     logoScrub.seekTo(0);
-  });
+    logoSource.addEventListener('loadeddata', drawLogoFrame, { once: true });
+  }
+  if (logoSource.readyState >= 1) onLogoMetadata();
+  else logoSource.addEventListener('loadedmetadata', onLogoMetadata);
 
   var currentT = 0, targetT = 0, rafId = null, lastTime = null;
   var FORWARD_RATE = 1, REVERSE_RATE = 1.6;
